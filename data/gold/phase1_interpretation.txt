@@ -1,0 +1,31 @@
+================================================================================
+INTERPRETACIÓN ECONÓMICA DE CAMBIOS DE RÉGIMEN
+================================================================================
+
+📊 HIGH YIELD (HYG) - Bonos de Alto Rendimiento
+--------------------------------------------------------------------------------
+  • Volatilidad en CALMA: 0.35%
+  • Volatilidad en CRISIS: 0.97%
+  • Aumento: 177.0%
+
+  INTERPRETACIÓN:
+  El aumento de volatilidad en crisis refleja:
+  ✓ Mayor aversión al riesgo en el mercado
+  ✓ Widening de spreads de crédito
+  ✓ Stress en el segmento de bonos de alto rendimiento
+  → El HYG es PRO-CÍCLICO (amplifica riesgo en crisis)
+
+🏆 ORO (GLD) - Activo Refugio
+--------------------------------------------------------------------------------
+  • Retorno medio en CALMA: 0.05%
+  • Retorno medio en CRISIS: 0.05%
+  • Volatilidad en CALMA: 1.01%
+  • Volatilidad en CRISIS: 1.31%
+
+  INTERPRETACIÓN:
+  ✓ El ORO SUBE durante crisis (comportamiento de refugio)
+  ✓ Inversores huyen a activos seguros
+  ✓ Cobertura contra inflación y depreciación de divisas
+  → El GLD es ANTI-CÍCLICO (protección en turbulencia)
+
+================================================================================
