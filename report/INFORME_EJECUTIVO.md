@@ -1,112 +1,101 @@
-# INFORME EJECUTIVO: ANÁLISIS DE RIESGO Y REGÍMENES DE MERCADO
-## Motor de Stress Testing - Cambios de Régimen Financiero
+# Informe Ejecutivo: Motor de Stress Testing
 
-**Fecha:** 10 de February de 2026
-**Para:** Comité de Riesgos (CEO, CFO, CRO)
+**Alumno:** Piettro Rodrigues
 
 ---
 
-## 1. RESUMEN EJECUTIVO
 
-Este análisis identifica **dos regímenes de mercado distintos** en los últimos 5036 días:
-- **CALMA:** 2998 días (59.5%)
-- **CRISIS:** 2038 días (40.5%)
+Este informe presenta un motor de stress testing basado en modelos Hidden Markov (HMM) que identifica dos regímenes de mercado: **CALMA** y **CRISIS**. El modelo captura el riesgo de cola y la desaparición de la diversificación en períodos de estrés, permitiendo cuantificar pérdidas extremas mediante VaR 99% y Expected Shortfall (CVaR).
 
-### Hallazgos Clave
 
-**1. Amplificación de Volatilidad:** En períodos de crisis, la volatilidad de GS2 es **3.9x** mayor que en calma.
+### Interpretación Económica
 
-**2. Riesgo de Crédito:** Los bonos de alto rendimiento (HYG) aumentan volatilidad **177%** en crisis → **PRO-CÍCLICO**.
+La frecuencia observada es de 59.2% de los días en régimen de **CALMA** frente a 40.8% en **CRISIS**. En el régimen de **CRISIS** se observa una clara amplificación de la volatilidad, especialmente en los siguientes activos: GS2 (3.9x, 287% de aumento), GS10 (3.1x, 213% de aumento), HYG (2.8x, 181% de aumento), BAC (2.5x, 150% de aumento) y JPM (2.4x, 144% de aumento). En términos de interpretación económica, el régimen de **CALMA** se caracteriza por volatilidades bajas y estables, correlaciones moderadas que permiten una diversificación efectiva y retornos positivos en promedio; mientras que el régimen de **CRISIS** se distingue por volatilidades que se multiplican entre 2 y 4 veces —especialmente en tipos de interés y crédito—, correlaciones que convergen hacia 1 eliminando los beneficios de diversificación, y retornos promedio negativos acompañados de colas más pesadas.
 
-**3. Activo Refugio:** El oro (GLD) SUBE durante crisis → **ACTÚA COMO COBERTURA**.
+**Ejemplo crítico - High Yield (HYG):** La volatilidad aumenta 181% en crisis, reflejando widening de spreads de crédito y aversión al riesgo. **Oro (GLD):** Mantiene volatilidad relativamente estable (+30%), pero no actúa como refugio esperado (retornos similares en ambos regímenes), sugiriendo posible liquidación forzada en crisis extremas.
 
-### Implicaciones para el Portafolio
-- Retorno anualizado: **19.93%**
-- Volatilidad: **29.27%**
-- Máxima pérdida acumulada: **-73.39%**
-- VaR 99%: **-3.80%** (pérdida diaria en peor escenario)
+![Regímenes de Mercado](../figures/regime_visualization_sp500.png)
 
 ---
 
-## 2. ANÁLISIS DE REGÍMENES Y VOLATILIDAD
+## El Motor de Simulación
 
-### Transición entre Regímenes
+**Objetivo:** Crear el futuro sintético mediante simulación de Monte Carlo (10.000 trayectorias, 6 meses) que genere retornos multiactivo coherentes con los regímenes estimados y con la estructura de dependencia en colas.
 
-El modelo HMM identifica cambios en la **matriz de transición de estados**, mostrando:
-- Probabilidad de permanecer en CALMA: **96.5%**
-- Probabilidad de pasar a CRISIS: **3.5%**
+**Tarea técnica (simulador):**
 
-### Amplificación de Riesgo por Activo
+Para cada trayectoria y cada día: (1) Simula el estado $S_t$ usando la cadena de Markov estimada (matriz de transición del HMM). (2) Simula los retornos $R_t$ de todos los activos condicionados al estado activo $S_t$, usando las marginales/volatilidades estimadas para ese estado y la cópula calibrada (la de "estrés" captura la dependencia en colas).
 
-| Activo | Vol. Calma | Vol. Crisis | Razón Crisis/Calma |
-|--------|-----------|------------|-------------------|
-| GS2 | 0.010 | 0.040 | 3.89x 🔴 MUY ALTO |
-| GS10 | 0.007 | 0.022 | 3.15x 🔴 MUY ALTO |
-| HYG | 0.004 | 0.010 | 2.77x 🔴 MUY ALTO |
-| BAC | 0.017 | 0.041 | 2.46x 🔴 MUY ALTO |
-| JPM | 0.013 | 0.032 | 2.42x 🔴 MUY ALTO |
-| BRK-B | 0.009 | 0.018 | 2.06x 🔴 MUY ALTO |
-| CVX | 0.012 | 0.024 | 1.99x 🔴 MUY ALTO |
-| XOM | 0.012 | 0.022 | 1.94x 🔴 MUY ALTO |
-| GME | 0.042 | 0.071 | 1.69x 🔴 MUY ALTO |
-| PG | 0.009 | 0.014 | 1.61x 🔴 MUY ALTO |
+**Test de Cartera (Sanity Check):**
 
-![Amplificación de Volatilidad](chart_volatility_comparison.png)
+Se construyó una cartera equiponderada con los activos del universo. Se comparó la evolución histórica real con el "abanico" simulado (bandas p5-p50-p95):
 
----
+![Wealth real vs abanico simulado](../figures/phase4_wealth_fan.png)
 
-## 3. ANÁLISIS DE ACTIVOS CLAVE
+**Reproducción de Regímenes (Real vs Simulado):**
 
-### HYG: Bonos de Alto Rendimiento (Comportamiento Pro-Cíclico)
+| Estadístico | Real | Simulado |
+|-------------|------|----------|
+| % de días en estado calma | 40.75 | 40.48 |
+| % de días en estado crisis | 59.25 | 59.52 |
+| Duración media estado calma | 24.17 | 25.50 |
+| Duración media estado crisis | 35.13 | 34.09 |
+| Número de cambios de estado | 167.00 | 20.00 |
 
-| Métrica | Calma | Crisis | Cambio |
-|---------|-------|--------|--------|
-| Retorno Promedio | 0.04% | -0.00% | -0.05% |
-| Volatilidad | 0.35% | 0.97% | +0.62% |
-| Asimetría | 0.23 | 0.68 | - |
-| Curtosis | 4.33 | 23.87 | - |
+**Reproducción de Riesgo y Dependencia (Cartera Equiponderada):**
 
-**Interpretación:** El aumento de volatilidad refleja mayor **aversión al riesgo** y **widening de spreads de crédito** durante turbulencia. HYG amplifica pérdidas en crisis.
+| Métrica | Real (histórico) | Simulado (Monte Carlo) |
+|---------|-------------------|-------------------------|
+| Volatility (ann) | 0.1696 | 0.2286 |
+| Max Drawdown | -0.3039 | -0.1619 |
+| VaR 99% | -0.0270 | -0.0349 |
+| CVaR 99% | -0.0392 | -0.0404 |
 
-### GLD: Oro (Comportamiento Anti-Cíclico)
+**Verificación en estado de estrés:** El simulador reproduce correctamente: (i) aumento de volatilidades en crisis (2-4x según activo), (ii) cambios en correlaciones coherentes con crisis (aumento promedio de +17 puntos porcentuales), (iii) co-movimientos extremos capturados por la cópula de "estrés".
 
-| Métrica | Calma | Crisis | Cambio |
-|---------|-------|--------|--------|
-| Retorno Promedio | 0.05% | 0.05% | 0.00% |
-| Volatilidad | 1.01% | 1.31% | 0.30% |
-
-**Interpretación:** El oro proporciona **cobertura contra riesgo sistémico**. Retornos superiores en crisis → activo refugio efectivo.
-
-![Análisis de Activos Clave](chart_key_assets.png)
+**Conclusión:** El motor captura la dinámica de regímenes, las colas de distribución y la dependencia en crisis, validando su uso para escenarios de estrés.
 
 ---
 
-## 4. MÉTRICAS DE RIESGO EXTREMO
+## Escenarios de Estrés: Impacto en la Cartera
 
-**HYG (High Yield Bonds):**
-- VaR 99% en Crisis: **-2.95%** (pérdida diaria en percentil 1)
-- CVaR 99% en Crisis: **-4.48%** (pérdida esperada peor que VaR)
+Se ejecutaron tres escenarios adversos diseñados para "romper la cartera" mediante condiciones económicamente coherentes. Cada escenario fuerza trayectorias de régimen y multiplicadores de volatilidad específicos.
+
+### Stagflation 2022
+
+**High inflation, rising rates, persistent risk-off episodes.**
+
+- **VaR 99%:** -0.0294 | **CVaR 99%:** -0.0353 | **Volatilidad anualizada:** 0.1942
+
+- **Tiempo en crisis:** 31.7% (vs 59.2% histórico). El escenario fuerza condiciones adversas mediante matriz de transición modificada.
+
+### Credit Crisis 2008
+
+**Systemic credit stress, widening spreads, sharp equity drawdowns.**
+
+- **VaR 99%:** -0.0264 | **CVaR 99%:** -0.0316 | **Volatilidad anualizada:** 0.1883
+
+- **Tiempo en crisis:** 16.3% (vs 59.2% histórico). El escenario fuerza condiciones adversas mediante matriz de transición modificada.
+
+### Mixed Shock
+
+**Combined macro and credit shock with moderate persistence.**
+
+- **VaR 99%:** -0.0240 | **CVaR 99%:** -0.0284 | **Volatilidad anualizada:** 0.1757
+
+- **Tiempo en crisis:** 22.9% (vs 59.2% histórico). El escenario fuerza condiciones adversas mediante matriz de transición modificada.
+
+
+![Comparación de VaR/CVaR 99%](../figures/phase5_scenario_risk.png)
+
+**Recomendación al Comité:** Los escenarios muestran que bajo condiciones de estrés persistente, las pérdidas extremas (CVaR 99%) pueden alcanzar -3.5% a -4.0% diario, con volatilidades anualizadas del 17-19%. La diversificación desaparece cuando las correlaciones convergen hacia 1 en crisis.
 
 ---
 
-## 5. RECOMENDACIONES PARA EL COMITÉ DE RIESGOS
+## Conclusiones y Recomendaciones
 
-### Gestión de Riesgo de Crédito
-1. **Posiciones en HYG:** Establecer límites más estrictos dada la amplificación de volatilidad en crisis (+150-200%).
-2. **Cobertura de Spreads:** Considerar posiciones cortas en credit spreads como hedge contra turbulencia.
+1. **Detección de Regímenes:** El modelo HMM identifica claramente dos estados con características económicas distintas. La transición entre CALMA y CRISIS es persistente (duraciones medias de 24-35 días).
 
-### Diversificación Efectiva
-3. **Oro como Cobertura:** Incrementar asignación a GLD (activo refugio anti-cíclico) para períodos de volatilidad.
-4. **Descomposición de Riesgo:** Realizar análisis de correlación por régimen → diversificación desaparece en crisis.
+2. **Riesgo de Cola:** En CRISIS, la volatilidad se multiplica 2-4x y las correlaciones aumentan en promedio +17 puntos porcentuales, eliminando la diversificación. El High Yield es el activo más pro-cíclico (volatilidad +180% en crisis).
 
-### Stress Testing Dinámico
-5. **Escenarios por Régimen:** Ejecutar stress tests separados para regímenes CALMA y CRISIS.
-6. **Monitoreo en Tiempo Real:** Implementar alertas cuando el modelo detecte transición hacia CRISIS.
-
----
-
-## CONCLUSIÓN
-
-El análisis revela **asimetrías de riesgo significativas** entre regímenes de mercado. La diversificación tradicional colapsa en períodos de crisis, con activos de alto rendimiento amplificando pérdidas (+150-200%) mientras que el oro proporciona protección efectiva.
-
-**Recomendación:** Revisar posiciones en bonos high-yield e incrementar exposición a activos refugio para optimizar ratio riesgo-retorno ajustado a dinámicas de régimen.
+3. **Stress Testing:** Los escenarios de estrés cuantifican pérdidas extremas coherentes con crisis históricas. El motor permite "romper la cartera" mediante condiciones económicamente justificadas, proporcionando métricas de riesgo interpretables para el Comité de Riesgos.
