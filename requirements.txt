@@ -1,0 +1,19 @@
+# Versiones fijadas y verificadas el 2026-10-26 contra el índice oficial de paquetes (PyPI):
+# cada versión coincide con la última publicada (pip index versions). Probado con Python 3.12.
+numpy==2.5.4
+pandas==3.1.0
+scipy==1.18.1
+hmmlearn==0.3.3
+matplotlib==3.11.2
+yfinance==1.7.0
+fredapi==0.5.2
+jinja2==3.1.6
+weasyprint==70.0
+pypdf==6.21.2
+nbformat==5.11.1
+nbconvert==7.17.2
+ipykernel
+pytest==9.1.1
+# En el stack de la spec pero SIN uso en el código actual (decisión D-36); se instalan solo si se quieren usar:
+# statsmodels==0.15.0
+# pydantic==2.14.1

@@ -1,0 +1,1239 @@
+{
+  "seed": 20260215,
+  "trace": [
+    {
+      "paso": "factores",
+      "metodo": "Δ S&P, Δlog VIX, Δ(10a-2a), Δ OAS; z-score",
+      "n_obs": 5234,
+      "seed": 20260215,
+      "segundos": 0.0134,
+      "nota": ""
+    },
+    {
+      "paso": "hmm",
+      "metodo": "GaussianHMM 2 estados, EM x10 inicios",
+      "n_obs": 5234,
+      "seed": 20260215,
+      "segundos": 1.7197,
+      "nota": "loglik=-22838.0"
+    },
+    {
+      "paso": "probabilidades",
+      "metodo": "suavizada (smoothing) y filtrada (forward)",
+      "n_obs": 5234,
+      "seed": 20260215,
+      "segundos": 0.9781,
+      "nota": ""
+    },
+    {
+      "paso": "estados_duros",
+      "metodo": "umbral 0.5 + duración mínima 15 d",
+      "n_obs": 5234,
+      "seed": 20260215,
+      "segundos": 0.0341,
+      "nota": "16.1% días en crisis"
+    },
+    {
+      "paso": "episodios",
+      "metodo": "tabla de episodios de crisis y sensibilidad",
+      "n_obs": 17,
+      "seed": 20260215,
+      "segundos": 0.1092,
+      "nota": "episodios de crisis"
+    },
+    {
+      "paso": "hmm_solo_sp500",
+      "metodo": "contraste D-04: HMM solo sobre el S&P 500",
+      "n_obs": 5234,
+      "seed": 20260215,
+      "segundos": 1.701,
+      "nota": ""
+    },
+    {
+      "paso": "retornos_activos",
+      "metodo": "equities+HYG (precio) y bonos (duración)",
+      "n_obs": 92640,
+      "seed": 20260215,
+      "segundos": 0.016,
+      "nota": "18 activos"
+    },
+    {
+      "paso": "momentos",
+      "metodo": "media, vol, skew, curtosis por activo y estado",
+      "n_obs": 5234,
+      "seed": 20260215,
+      "segundos": 0.0883,
+      "nota": ""
+    },
+    {
+      "paso": "ajuste_marginales",
+      "metodo": "Normal vs t por MLE, selección BIC",
+      "n_obs": 36,
+      "seed": 20260215,
+      "segundos": 4.4912,
+      "nota": "35 t de 36"
+    },
+    {
+      "paso": "refugio",
+      "metodo": "vol HYG y comportamiento de GLD",
+      "n_obs": 5234,
+      "seed": 20260215,
+      "segundos": 0.069,
+      "nota": ""
+    },
+    {
+      "paso": "ventana_comun",
+      "metodo": "días con los 18 activos (D-05)",
+      "n_obs": 3662,
+      "seed": 20260215,
+      "segundos": 0.0025,
+      "nota": "calma=3292, crisis=370, desde 2012-04-02"
+    },
+    {
+      "paso": "bootstrap_correlaciones",
+      "metodo": "1000 remuestreos de días, IC 95 %",
+      "n_obs": 3662,
+      "seed": 20260215,
+      "segundos": 1.1463,
+      "nota": ""
+    },
+    {
+      "paso": "copulas_calma",
+      "metodo": "Gauss (scores) y t (tau de Kendall + MLE de df)",
+      "n_obs": 3292,
+      "seed": 20260215,
+      "segundos": 1.6959,
+      "nota": "df_t=14.2"
+    },
+    {
+      "paso": "copulas_crisis",
+      "metodo": "Gauss (scores) y t (tau de Kendall + MLE de df)",
+      "n_obs": 370,
+      "seed": 20260215,
+      "segundos": 1.1595,
+      "nota": "df_t=10.7"
+    },
+    {
+      "paso": "montecarlo",
+      "metodo": "10000 trayectorias x 126 d: Markov -> cópula -> marginales",
+      "n_obs": 1260000,
+      "seed": 20260215,
+      "segundos": 15.5835,
+      "nota": "915 retornos topados de 22680000"
+    },
+    {
+      "paso": "validacion",
+      "metodo": "ventanas móviles reales de 126 d vs simulado (A/B/C y estrés)",
+      "n_obs": 3537,
+      "seed": 20260215,
+      "segundos": 1.7856,
+      "nota": ""
+    },
+    {
+      "paso": "proxy_enph",
+      "metodo": "MCO sobre S&P 500 + ruido idiosincrático por estado (D-21)",
+      "n_obs": 1572,
+      "seed": 20260215,
+      "segundos": 0.0146,
+      "nota": "beta=1.63, rellena días previos a 2012"
+    },
+    {
+      "paso": "escenario_E1",
+      "metodo": "recalibra crisis con 2022-01-01..2022-12-31; arranca en crisis",
+      "n_obs": 1260000,
+      "seed": 20260215,
+      "segundos": 16.0381,
+      "nota": "544 topados"
+    },
+    {
+      "paso": "escenario_E2",
+      "metodo": "recalibra crisis con 2008-09-01..2009-03-31; arranca en crisis",
+      "n_obs": 1260000,
+      "seed": 20260215,
+      "segundos": 16.77,
+      "nota": "2416 topados"
+    },
+    {
+      "paso": "escenario_E3",
+      "metodo": "pánico de liquidez: vol x1.5, df copula 3.0, λ=0.3",
+      "n_obs": 1260000,
+      "seed": 20260215,
+      "segundos": 16.2416,
+      "nota": "7627 topados"
+    },
+    {
+      "paso": "sensibilidades",
+      "metodo": "ventana alternativa, ruido x2.0 de la proxy, sin ENPH (3000 sims)",
+      "n_obs": 4,
+      "seed": 20260215,
+      "segundos": 21.1084,
+      "nota": ""
+    }
+  ],
+  "regimenes": {
+    "pct_crisis": 0.16106228505922812,
+    "n_cambios": 34,
+    "duracion_media": {
+      "0": 243.94444444444446,
+      "1": 49.588235294117645
+    },
+    "duracion_esperada": {
+      "0": 258.23529411764656,
+      "1": 49.58823529411753
+    },
+    "transmat": [
+      [
+        0.996127562642369,
+        0.0038724373576309794
+      ],
+      [
+        0.020166073546856466,
+        0.9798339264531435
+      ]
+    ],
+    "loglik": -22837.97007673984,
+    "transmat_hmm": [
+      [
+        0.9370935770589846,
+        0.06290642294101541
+      ],
+      [
+        0.2168916567235339,
+        0.7831083432764661
+      ]
+    ],
+    "medias_z": [
+      [
+        0.042135002816711516,
+        -0.04749817434405045,
+        -0.015543339993441858,
+        -0.05780610328700716
+      ],
+      [
+        -0.14531239648549407,
+        0.16380854589344784,
+        0.05360483761349052,
+        0.19935784593793146
+      ]
+    ],
+    "acuerdo_filtrado_suavizado": 0.9487963316774933,
+    "acuerdo_hmm_solo_sp500": 0.903706534199465
+  },
+  "sensibilidad_duracion": {
+    "10": {
+      "pct_crisis": 0.1711883836453955,
+      "n_cambios": 48.0,
+      "n_episodios_crisis": 24.0
+    },
+    "15": {
+      "pct_crisis": 0.16106228505922812,
+      "n_cambios": 34.0,
+      "n_episodios_crisis": 17.0
+    },
+    "20": {
+      "pct_crisis": 0.16068016813144823,
+      "n_cambios": 22.0,
+      "n_episodios_crisis": 11.0
+    }
+  },
+  "episodios": [
+    {
+      "inicio": "2007-07-24",
+      "fin": "2007-08-20",
+      "dias": "20",
+      "caida_sp500": "-0.08748872890383774",
+      "pico_vix": "30.829999923706055",
+      "narrativa": "Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+    },
+    {
+      "inicio": "2007-11-07",
+      "fin": "2007-11-28",
+      "dias": "15",
+      "caida_sp500": "-0.07436182216037002",
+      "pico_vix": "31.09000015258789",
+      "narrativa": "Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+    },
+    {
+      "inicio": "2007-12-31",
+      "fin": "2008-02-05",
+      "dias": "25",
+      "caida_sp500": "-0.1136226767472025",
+      "pico_vix": "31.010000228881836",
+      "narrativa": "Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+    },
+    {
+      "inicio": "2008-03-06",
+      "fin": "2008-04-08",
+      "dias": "23",
+      "caida_sp500": "-0.0452350290645791",
+      "pico_vix": "32.2400016784668",
+      "narrativa": "Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+    },
+    {
+      "inicio": "2008-06-05",
+      "fin": "2008-08-08",
+      "dias": "46",
+      "caida_sp500": "-0.1178404899405443",
+      "pico_vix": "28.540000915527344",
+      "narrativa": "Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+    },
+    {
+      "inicio": "2008-09-04",
+      "fin": "2009-08-03",
+      "dias": "230",
+      "caida_sp500": "-0.4693798807349533",
+      "pico_vix": "80.86000061035156",
+      "narrativa": "Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+    },
+    {
+      "inicio": "2010-05-04",
+      "fin": "2010-06-10",
+      "dias": "27",
+      "caida_sp500": "-0.1262539199753394",
+      "pico_vix": "45.790000915527344",
+      "narrativa": "Crisis de deuda soberana europea y «flash crash»"
+    },
+    {
+      "inicio": "2011-07-29",
+      "fin": "2011-11-30",
+      "dias": "87",
+      "caida_sp500": "-0.15487407003357734",
+      "pico_vix": "48.0",
+      "narrativa": "Rebaja de rating de EE. UU. y contagio de la crisis europea"
+    },
+    {
+      "inicio": "2016-01-11",
+      "fin": "2016-02-17",
+      "dias": "26",
+      "caida_sp500": "-0.04836036473175753",
+      "pico_vix": "28.139999389648438",
+      "narrativa": "Devaluación del yuan, caída del petróleo y miedo a desaceleración global"
+    },
+    {
+      "inicio": "2018-12-14",
+      "fin": "2019-01-08",
+      "dias": "16",
+      "caida_sp500": "-0.11297318168872572",
+      "pico_vix": "36.06999969482422",
+      "narrativa": "Venta masiva del 4T 2018: Fed restrictiva y guerra comercial"
+    },
+    {
+      "inicio": "2020-02-24",
+      "fin": "2020-06-11",
+      "dias": "77",
+      "caida_sp500": "-0.3296682189068234",
+      "pico_vix": "82.69000244140625",
+      "narrativa": "Pandemia de COVID-19: parón económico y crisis de liquidez"
+    },
+    {
+      "inicio": "2020-09-02",
+      "fin": "2020-09-28",
+      "dias": "18",
+      "caida_sp500": "-0.08215444926251414",
+      "pico_vix": "33.599998474121094",
+      "narrativa": "Venta de megacaps tecnológicas tras el rally de verano de 2020"
+    },
+    {
+      "inicio": "2022-02-22",
+      "fin": "2022-08-03",
+      "dias": "113",
+      "caida_sp500": "-0.15684535966260993",
+      "pico_vix": "36.45000076293945",
+      "narrativa": "Estanflación: inflación alta y subidas agresivas de tipos; caen acciones y bonos a la vez"
+    },
+    {
+      "inicio": "2022-08-25",
+      "fin": "2022-11-16",
+      "dias": "59",
+      "caida_sp500": "-0.136143757700939",
+      "pico_vix": "33.630001068115234",
+      "narrativa": "Estanflación: inflación alta y subidas agresivas de tipos; caen acciones y bonos a la vez"
+    },
+    {
+      "inicio": "2022-12-09",
+      "fin": "2023-01-06",
+      "dias": "19",
+      "caida_sp500": "-0.04548746909135748",
+      "pico_vix": "25.0",
+      "narrativa": "Estanflación: inflación alta y subidas agresivas de tipos; caen acciones y bonos a la vez"
+    },
+    {
+      "inicio": "2023-03-03",
+      "fin": "2023-03-31",
+      "dias": "21",
+      "caida_sp500": "-0.03154459789018749",
+      "pico_vix": "26.520000457763672",
+      "narrativa": "Quiebra de Silicon Valley Bank y estrés en bancos regionales"
+    },
+    {
+      "inicio": "2025-04-03",
+      "fin": "2025-05-02",
+      "dias": "21",
+      "caida_sp500": "-0.12135493032764266",
+      "pico_vix": "52.33000183105469",
+      "narrativa": "Aranceles de abril de 2025 y shock de incertidumbre comercial"
+    }
+  ],
+  "refugio": {
+    "hyg_vol_calma": 0.0024270154529333213,
+    "hyg_vol_crisis": 0.007836565529388323,
+    "hyg_ratio_vol": 3.228889836658004,
+    "gld_media_calma": 0.00041028689440660346,
+    "gld_media_crisis": 0.0005779003550796794,
+    "gld_corr_sp500_calma": 0.11051326815501208,
+    "gld_corr_sp500_crisis": 0.029755109399059076,
+    "sp500_media_crisis": -0.0007563737550914334,
+    "gld_dias_positivos_crisis": 0.5148279952550415,
+    "gld_ratio_vol": 1.497314290378367
+  },
+  "simulacion_base": {
+    "transmat_usada": [
+      [
+        0.996127562642369,
+        0.0038724373576309794
+      ],
+      [
+        0.020166073546856466,
+        0.9798339264531435
+      ]
+    ],
+    "n_sims": 10000,
+    "horizon": 126,
+    "n_clipped": 915,
+    "n_ventanas_reales": 3537,
+    "cobertura": {
+      "p5_sim": -0.18549594853312143,
+      "p95_sim": 0.2851582532703412,
+      "cobertura_p5_p95_real": 0.9363867684478372,
+      "percentil_medio_real": 0.5955672038450665,
+      "ks_estadistico": 0.20429445858071815
+    },
+    "tablas": {
+      "regimenes": [
+        {
+          "index": "pct_dias_crisis",
+          "real_ventanas": "0.165003",
+          "simulado": "0.161187",
+          "teorico_cadena": "0.161093"
+        },
+        {
+          "index": "cambios_por_ventana",
+          "real_ventanas": "0.831865",
+          "simulado": "0.812",
+          "teorico_cadena": NaN
+        },
+        {
+          "index": "duracion_media_calma",
+          "real_ventanas": "84.105148",
+          "simulado": "85.02856",
+          "teorico_cadena": "258.235294"
+        },
+        {
+          "index": "duracion_media_crisis",
+          "real_ventanas": "35.787736",
+          "simulado": "35.693322",
+          "teorico_cadena": "49.588235"
+        }
+      ],
+      "riesgo": [
+        {
+          "index": "vol_diaria",
+          "real": "0.018635",
+          "simulado": "0.011573"
+        },
+        {
+          "index": "vol_anualizada",
+          "real": "0.295826",
+          "simulado": "0.18371"
+        },
+        {
+          "index": "var99_diario",
+          "real": "0.029559",
+          "simulado": "0.033044"
+        },
+        {
+          "index": "es99_diario",
+          "real": "0.065094",
+          "simulado": "0.047425"
+        },
+        {
+          "index": "var99_normal_diario",
+          "real": "0.042321",
+          "simulado": "0.026469"
+        },
+        {
+          "index": "es99_normal_diario",
+          "real": "0.048636",
+          "simulado": "0.030391"
+        },
+        {
+          "index": "var99_6m",
+          "real": "0.106699",
+          "simulado": "0.293588"
+        },
+        {
+          "index": "es99_6m",
+          "real": "0.128851",
+          "simulado": "0.34489"
+        },
+        {
+          "index": "retorno_6m_mediano",
+          "real": "0.093001",
+          "simulado": "0.061532"
+        },
+        {
+          "index": "mdd_medio_6m",
+          "real": "0.101417",
+          "simulado": "0.114978"
+        },
+        {
+          "index": "mdd_p95_6m",
+          "real": "0.279541",
+          "simulado": "0.271903"
+        }
+      ],
+      "riesgo_sin_GME": [
+        {
+          "index": "vol_diaria",
+          "real": "0.009523",
+          "simulado": "0.011221"
+        },
+        {
+          "index": "vol_anualizada",
+          "real": "0.151176",
+          "simulado": "0.178132"
+        },
+        {
+          "index": "var99_diario",
+          "real": "0.026061",
+          "simulado": "0.032015"
+        },
+        {
+          "index": "es99_diario",
+          "real": "0.036999",
+          "simulado": "0.046065"
+        },
+        {
+          "index": "var99_normal_diario",
+          "real": "0.021369",
+          "simulado": "0.025613"
+        },
+        {
+          "index": "es99_normal_diario",
+          "real": "0.024596",
+          "simulado": "0.029415"
+        },
+        {
+          "index": "var99_6m",
+          "real": "0.102439",
+          "simulado": "0.276753"
+        },
+        {
+          "index": "es99_6m",
+          "real": "0.120265",
+          "simulado": "0.330529"
+        },
+        {
+          "index": "retorno_6m_mediano",
+          "real": "0.09584",
+          "simulado": "0.065752"
+        },
+        {
+          "index": "mdd_medio_6m",
+          "real": "0.081209",
+          "simulado": "0.109696"
+        },
+        {
+          "index": "mdd_p95_6m",
+          "real": "0.163836",
+          "simulado": "0.261895"
+        }
+      ],
+      "percentiles_diarios": [
+        {
+          "percentil": "0.1",
+          "real": "-0.13387",
+          "simulado": "-0.06714"
+        },
+        {
+          "percentil": "1.0",
+          "real": "-0.029559",
+          "simulado": "-0.033044"
+        },
+        {
+          "percentil": "5.0",
+          "real": "-0.015664",
+          "simulado": "-0.016464"
+        },
+        {
+          "percentil": "25.0",
+          "real": "-0.004203",
+          "simulado": "-0.004847"
+        },
+        {
+          "percentil": "50.0",
+          "real": "0.00096",
+          "simulado": "0.000587"
+        },
+        {
+          "percentil": "75.0",
+          "real": "0.00607",
+          "simulado": "0.005948"
+        },
+        {
+          "percentil": "95.0",
+          "real": "0.016247",
+          "simulado": "0.016798"
+        },
+        {
+          "percentil": "99.0",
+          "real": "0.035115",
+          "simulado": "0.032153"
+        },
+        {
+          "percentil": "99.9",
+          "real": "0.171619",
+          "simulado": "0.065057"
+        }
+      ],
+      "estres": [
+        {
+          "estado": "calma",
+          "fuente": "real",
+          "n": "3292.0",
+          "vol_mediana_activos": "0.013662",
+          "corr_media": "0.151419",
+          "lambda_L_5pct": "0.168164",
+          "curtosis_exceso_mediana": "5.011608"
+        },
+        {
+          "estado": "calma",
+          "fuente": "simulado",
+          "n": "100000.0",
+          "vol_mediana_activos": "0.013878",
+          "corr_media": "0.176968",
+          "lambda_L_5pct": "0.140267",
+          "curtosis_exceso_mediana": "13.005086"
+        },
+        {
+          "estado": "crisis",
+          "fuente": "real",
+          "n": "370.0",
+          "vol_mediana_activos": "0.029573",
+          "corr_media": "0.363943",
+          "lambda_L_5pct": "0.268857",
+          "curtosis_exceso_mediana": "3.855525"
+        },
+        {
+          "estado": "crisis",
+          "fuente": "simulado",
+          "n": "100000.0",
+          "vol_mediana_activos": "0.02911",
+          "corr_media": "0.354405",
+          "lambda_L_5pct": "0.244826",
+          "curtosis_exceso_mediana": "9.221923"
+        }
+      ]
+    }
+  },
+  "escenarios": {
+    "corr_bonos_acciones_base": {
+      "calma": -0.08061951028493415,
+      "crisis": -0.09645653746505975
+    },
+    "modelo_proxy": {
+      "alpha": 0.0008141102751317008,
+      "beta": 1.6310281207333006,
+      "resid_std": [
+        0.047543843767415855,
+        0.04578610988394247
+      ]
+    },
+    "comparativa": {
+      "Base": {
+        "vol_anualizada": 0.18371,
+        "var99_diario": 0.033044,
+        "es99_diario": 0.047425,
+        "var99_1m": 0.161311,
+        "es99_1m": 0.200192,
+        "var99_6m": 0.293588,
+        "es99_6m": 0.34489,
+        "mdd_medio_6m": 0.114978,
+        "mdd_p95_6m": 0.271903,
+        "retorno_mediano_6m": 0.061532,
+        "prob_perdida_20pct_6m": 0.0434
+      },
+      "E1": {
+        "vol_anualizada": 0.191397,
+        "var99_diario": 0.032692,
+        "es99_diario": 0.040757,
+        "var99_1m": 0.152817,
+        "es99_1m": 0.174336,
+        "var99_6m": 0.261613,
+        "es99_6m": 0.300283,
+        "mdd_medio_6m": 0.131055,
+        "mdd_p95_6m": 0.248095,
+        "retorno_mediano_6m": 0.029045,
+        "prob_perdida_20pct_6m": 0.0364
+      },
+      "E2": {
+        "vol_anualizada": 0.341848,
+        "var99_diario": 0.065677,
+        "es99_diario": 0.082692,
+        "var99_1m": 0.287114,
+        "es99_1m": 0.315066,
+        "var99_6m": 0.496038,
+        "es99_6m": 0.534602,
+        "mdd_medio_6m": 0.239797,
+        "mdd_p95_6m": 0.469202,
+        "retorno_mediano_6m": -0.031467,
+        "prob_perdida_20pct_6m": 0.2284
+      },
+      "E3": {
+        "vol_anualizada": 0.371814,
+        "var99_diario": 0.070745,
+        "es99_diario": 0.10391,
+        "var99_1m": 0.318887,
+        "es99_1m": 0.360407,
+        "var99_6m": 0.509449,
+        "es99_6m": 0.558033,
+        "mdd_medio_6m": 0.236364,
+        "mdd_p95_6m": 0.472449,
+        "retorno_mediano_6m": -0.004171,
+        "prob_perdida_20pct_6m": 0.203
+      }
+    },
+    "calibracion": [
+      {
+        "escenario": "E1",
+        "ventana": "2022-01-01 a 2022-12-31",
+        "base": "días de crisis",
+        "n_obs": 187,
+        "df_copula": 21.011488211046572,
+        "corr_media_copula": 0.3769852035100631,
+        "corr_bonos_acciones": 0.10293719932549762
+      },
+      {
+        "escenario": "E2",
+        "ventana": "2008-09-01 a 2009-03-31",
+        "base": "días de crisis",
+        "n_obs": 144,
+        "df_copula": 10.667561159706981,
+        "corr_media_copula": 0.3266544855426135,
+        "corr_bonos_acciones": -0.3211677612708659
+      },
+      {
+        "escenario": "E1 ventana a oct-2022",
+        "ventana": "2022-01-01 a 2022-10-31",
+        "base": "días de crisis",
+        "n_obs": 160,
+        "df_copula": 24.558225379551466,
+        "corr_media_copula": 0.3639775808111629,
+        "corr_bonos_acciones": 0.09074519666016775
+      },
+      {
+        "escenario": "E2 ventana post-Lehman",
+        "ventana": "2008-09-15 a 2009-03-31",
+        "base": "días de crisis",
+        "n_obs": 137,
+        "df_copula": 11.696443864061164,
+        "corr_media_copula": 0.3309796090556186,
+        "corr_bonos_acciones": -0.3191149404714449
+      },
+      {
+        "escenario": "E2 ruido proxy x2",
+        "ventana": "2008-09-01 a 2009-03-31",
+        "base": "días de crisis",
+        "n_obs": 144,
+        "df_copula": 11.220499024974451,
+        "corr_media_copula": 0.3112286469153964,
+        "corr_bonos_acciones": -0.3137443686678378
+      },
+      {
+        "escenario": "E2 sin ENPH",
+        "ventana": "2008-09-01 a 2009-03-31",
+        "base": "días de crisis",
+        "n_obs": 144,
+        "df_copula": 8.579840880303939,
+        "corr_media_copula": 0.3107294749724335,
+        "corr_bonos_acciones": -0.3192713364150232
+      }
+    ],
+    "perfil_crisis": {
+      "E1": {
+        "vol_mediana_activos": 0.022032,
+        "corr_media": 0.375371,
+        "lambda_L_5pct": 0.227349
+      },
+      "E2": {
+        "vol_mediana_activos": 0.0416,
+        "corr_media": 0.321472,
+        "lambda_L_5pct": 0.250042
+      },
+      "E3": {
+        "vol_mediana_activos": 0.042092,
+        "corr_media": 0.549605,
+        "lambda_L_5pct": 0.421553
+      }
+    },
+    "validacion_ventana_real": {
+      "E1": {
+        "dias_ventana_real": 126.0,
+        "retorno_real": -0.107095,
+        "percentil_retorno_real": 0.147,
+        "mdd_real": 0.16316,
+        "percentil_mdd_real": 0.7351
+      },
+      "E2": {
+        "dias_ventana_real": 126.0,
+        "retorno_real": -0.316454,
+        "percentil_retorno_real": 0.1006,
+        "mdd_real": 0.337213,
+        "percentil_mdd_real": 0.7751
+      }
+    },
+    "sensibilidad": [
+      {
+        "escenario": "E1",
+        "variante": "E1 ventana a oct-2022",
+        "vol_anualizada": 0.19462210619540798,
+        "var99_6m": 0.26351169344353625,
+        "es99_6m": 0.2973548664197196,
+        "mdd_medio_6m": 0.1319831489632581,
+        "prob_perdida_20pct_6m": 0.03933333333333333
+      },
+      {
+        "escenario": "E2",
+        "variante": "E2 ventana post-Lehman",
+        "vol_anualizada": 0.3492084919053011,
+        "var99_6m": 0.5061639287414984,
+        "es99_6m": 0.5366778750223775,
+        "mdd_medio_6m": 0.24349526106520725,
+        "prob_perdida_20pct_6m": 0.236
+      },
+      {
+        "escenario": "E2",
+        "variante": "E2 ruido proxy x2",
+        "vol_anualizada": 0.3505124653290872,
+        "var99_6m": 0.49841845762173814,
+        "es99_6m": 0.5463035485088847,
+        "mdd_medio_6m": 0.2400988036509795,
+        "prob_perdida_20pct_6m": 0.20966666666666667
+      },
+      {
+        "escenario": "E2",
+        "variante": "E2 sin ENPH",
+        "vol_anualizada": 0.3239623271696452,
+        "var99_6m": 0.48460818081083407,
+        "es99_6m": 0.5263491274561959,
+        "mdd_medio_6m": 0.22823254632765352,
+        "prob_perdida_20pct_6m": 0.219
+      }
+    ],
+    "perfil_real_ventana": {
+      "E1": {
+        "vol_mediana_activos": 0.02175821972065,
+        "corr_media": 0.35952361325894344
+      },
+      "E2": {
+        "vol_mediana_activos": 0.04163487336790883,
+        "corr_media": 0.31819429577898556
+      }
+    },
+    "n_clipped": {
+      "E1": 544,
+      "E2": 2416,
+      "E3": 7627
+    }
+  },
+  "copulas": {
+    "n_ventana": 3662,
+    "n_calma": 3292,
+    "n_crisis": 370,
+    "bootstrap": {
+      "0": {
+        "media": 0.1514185211204302,
+        "ic_inf": 0.1414082469810839,
+        "ic_sup": 0.16198232250721423
+      },
+      "1": {
+        "media": 0.36394279832552845,
+        "ic_inf": 0.3247821134171608,
+        "ic_sup": 0.40714952319747727
+      },
+      "dif": {
+        "diferencia": 0.21252427720509826,
+        "ic_inf": 0.16702667060596468,
+        "ic_sup": 0.2534760737803916,
+        "p_menor_igual_cero": 0.0
+      }
+    },
+    "descomposicion_riesgo": {
+      "vol_calma": 0.008229315899806251,
+      "vol_crisis": 0.020011871586822418,
+      "vol_solo_vols_crisis": 0.013891307312229878,
+      "vol_solo_corr_crisis": 0.011826959747497782
+    },
+    "perfil_estados": {
+      "mediana_ratio_vol": 1.9584091243937563,
+      "corr_media_calma": 0.1514185211204302,
+      "corr_media_crisis": 0.36394279832552845,
+      "spearman_medio_calma": 0.172500993976728,
+      "spearman_medio_crisis": 0.3433407933638679,
+      "pct_pares_corr_sube": 0.8823529411764706,
+      "lambda_L_calma": 0.168163660766048,
+      "lambda_L_crisis": 0.2688570923865041,
+      "vix_medio_calma": 16.390227832886893,
+      "vix_medio_crisis": 29.530000052580963,
+      "oas_medio_calma": 4.126659574468085,
+      "oas_medio_crisis": 5.42554054054054
+    },
+    "elegida_bic": {
+      "calma": "t",
+      "crisis": "t"
+    },
+    "ajuste": {
+      "calma|gauss": {
+        "loglik": 11621.103176814353,
+        "aic": -22936.206353628706,
+        "bic": -22003.02101767377,
+        "df": NaN,
+        "lambda_L_ajustada": 0.11295555555555555,
+        "lambda_L_empirica": 0.168163660766048
+      },
+      "calma|t": {
+        "loglik": 12431.639914796091,
+        "aic": -24555.279829592182,
+        "bic": -23615.99524307545,
+        "df": 14.196013577360652,
+        "lambda_L_ajustada": 0.14158888888888888,
+        "lambda_L_empirica": 0.168163660766048
+      },
+      "crisis|gauss": {
+        "loglik": 2935.7340208654164,
+        "aic": -5565.468041730833,
+        "bic": -4966.702081868178,
+        "df": NaN,
+        "lambda_L_ajustada": 0.20770980392156865,
+        "lambda_L_empirica": 0.2688570923865041
+      },
+      "crisis|t": {
+        "loglik": 3051.1353364232746,
+        "aic": -5794.270672846549,
+        "bic": -5191.591209978255,
+        "df": 10.689476734897823,
+        "lambda_L_ajustada": 0.24177777777777776,
+        "lambda_L_empirica": 0.2688570923865041
+      }
+    }
+  },
+  "marginales_elegidas": {
+    "AAPL|0": {
+      "familia": "t",
+      "params": [
+        3.986905097643802,
+        0.001343244570342448,
+        0.012092495078648421
+      ]
+    },
+    "AAPL|1": {
+      "familia": "t",
+      "params": [
+        4.735437786913703,
+        -0.0004860889725387087,
+        0.024227611720558796
+      ]
+    },
+    "AMZN|0": {
+      "familia": "t",
+      "params": [
+        3.7241563822014507,
+        0.0009847554323716352,
+        0.013441852790058982
+      ]
+    },
+    "AMZN|1": {
+      "familia": "t",
+      "params": [
+        5.1386477033792755,
+        -0.0009842722602770653,
+        0.02827361675444655
+      ]
+    },
+    "BAC|0": {
+      "familia": "t",
+      "params": [
+        4.036797428829843,
+        0.0006381973323626385,
+        0.012267370883325954
+      ]
+    },
+    "BAC|1": {
+      "familia": "t",
+      "params": [
+        3.0,
+        -0.0034918261013226577,
+        0.034316369565199664
+      ]
+    },
+    "BRK-B|0": {
+      "familia": "t",
+      "params": [
+        4.716148016202129,
+        0.0005713509497399946,
+        0.007499381092200847
+      ]
+    },
+    "BRK-B|1": {
+      "familia": "t",
+      "params": [
+        3.1666000243155947,
+        -0.0011361745776375747,
+        0.015818382566791304
+      ]
+    },
+    "CVX|0": {
+      "familia": "t",
+      "params": [
+        5.395837993699466,
+        0.0008821284635214511,
+        0.01064347264144604
+      ]
+    },
+    "CVX|1": {
+      "familia": "t",
+      "params": [
+        3.4298100218780307,
+        -0.00029884147271513846,
+        0.02090892642736117
+      ]
+    },
+    "ENPH|0": {
+      "familia": "t",
+      "params": [
+        3.4421956485325085,
+        0.00017087337170961203,
+        0.03244378201197669
+      ]
+    },
+    "ENPH|1": {
+      "familia": "t",
+      "params": [
+        4.543055018905838,
+        -0.0007969647413883798,
+        0.04267486832686581
+      ]
+    },
+    "GLD|0": {
+      "familia": "t",
+      "params": [
+        3.764600841354956,
+        0.0006558945098650525,
+        0.007490021270849414
+      ]
+    },
+    "GLD|1": {
+      "familia": "t",
+      "params": [
+        4.45420393235284,
+        0.0005237544179460653,
+        0.011932097838596993
+      ]
+    },
+    "GME|0": {
+      "familia": "t",
+      "params": [
+        3.0,
+        0.00025164398116613295,
+        0.019879957349620166
+      ]
+    },
+    "GME|1": {
+      "familia": "t",
+      "params": [
+        3.2740165624862296,
+        -0.0029978597376521306,
+        0.03557322271735711
+      ]
+    },
+    "GOOGL|0": {
+      "familia": "t",
+      "params": [
+        3.4453863461936693,
+        0.0011043207211123391,
+        0.010825525110338404
+      ]
+    },
+    "GOOGL|1": {
+      "familia": "t",
+      "params": [
+        5.325471887012039,
+        -0.0009767532346304493,
+        0.02241641273721718
+      ]
+    },
+    "JNJ|0": {
+      "familia": "t",
+      "params": [
+        4.100834399893945,
+        0.0005819396043406867,
+        0.006672257086867577
+      ]
+    },
+    "JNJ|1": {
+      "familia": "t",
+      "params": [
+        3.0,
+        3.393510379828582e-05,
+        0.010868893470612068
+      ]
+    },
+    "JPM|0": {
+      "familia": "t",
+      "params": [
+        4.241423809155979,
+        0.0009140267725610458,
+        0.010703913817651565
+      ]
+    },
+    "JPM|1": {
+      "familia": "t",
+      "params": [
+        3.0,
+        -0.0024760158377152798,
+        0.028634705594166823
+      ]
+    },
+    "MSFT|0": {
+      "familia": "t",
+      "params": [
+        4.00990722294852,
+        0.0009614680685998595,
+        0.010177196206903438
+      ]
+    },
+    "MSFT|1": {
+      "familia": "t",
+      "params": [
+        4.212228348187626,
+        -0.0010763971283560018,
+        0.021094304582808192
+      ]
+    },
+    "NVDA|0": {
+      "familia": "t",
+      "params": [
+        3.854585244236937,
+        0.0017065443764440699,
+        0.01875613648444218
+      ]
+    },
+    "NVDA|1": {
+      "familia": "t",
+      "params": [
+        7.816890887373899,
+        -0.0008305668793618671,
+        0.039213560521599314
+      ]
+    },
+    "PG|0": {
+      "familia": "t",
+      "params": [
+        4.143569459792617,
+        0.0005108138368084267,
+        0.006883415689921962
+      ]
+    },
+    "PG|1": {
+      "familia": "t",
+      "params": [
+        3.3401738482426415,
+        0.00020885390043258727,
+        0.01275360584258731
+      ]
+    },
+    "XOM|0": {
+      "familia": "t",
+      "params": [
+        4.840568482151593,
+        0.0005726275771315306,
+        0.01018222345835354
+      ]
+    },
+    "XOM|1": {
+      "familia": "t",
+      "params": [
+        3.8873348218747683,
+        -0.00010836160182952787,
+        0.020602941513058404
+      ]
+    },
+    "HYG|0": {
+      "familia": "t",
+      "params": [
+        3.0,
+        0.0004674006088304698,
+        0.0015526535411944618
+      ]
+    },
+    "HYG|1": {
+      "familia": "t",
+      "params": [
+        3.0,
+        8.20097432006159e-05,
+        0.004763646703210365
+      ]
+    },
+    "UST10Y|0": {
+      "familia": "normal",
+      "params": [
+        5.3349955548691774e-05,
+        0.004176765138438814
+      ]
+    },
+    "UST10Y|1": {
+      "familia": "t",
+      "params": [
+        9.029780732605811,
+        0.0003667099789708472,
+        0.006556232225167248
+      ]
+    },
+    "UST2Y|0": {
+      "familia": "t",
+      "params": [
+        3.0,
+        3.8670580768780494e-05,
+        0.0005262522313072837
+      ]
+    },
+    "UST2Y|1": {
+      "familia": "t",
+      "params": [
+        3.0,
+        9.674400728590011e-05,
+        0.0010093754157802558
+      ]
+    }
+  },
+  "parametros": {
+    "seed": 20260215,
+    "n_sims": 10000,
+    "horizonte_dias": 126,
+    "nivel_var": 0.99,
+    "min_episodio_dias": 15,
+    "inicio_datos": "2006-01-01",
+    "n_activos": 18,
+    "primer_dia_modelo": "2006-01-04",
+    "ultimo_dia_modelo": "2026-10-23",
+    "n_dias_modelo": 5234,
+    "umbral_crisis": 0.5,
+    "e3_vol_mult": 1.5,
+    "cola_q_pct": 5.0,
+    "banda_pct": [
+      5,
+      95
+    ],
+    "ic_pct": 95
+  }
+}

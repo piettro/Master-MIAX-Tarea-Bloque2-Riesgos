@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Escenarios de estrés y cambios de régimen de mercado</title>
+<style>
+  @page { size: A4; margin: 13mm 14mm 12mm 14mm; @bottom-right { content: counter(page) " / " counter(pages); font-size: 7.5pt; color: #666; } }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 8.7pt; line-height: 1.32; color: #1b1b1b; }
+  h1 { font-size: 15pt; margin: 0 0 1mm 0; color: #0b3d63; }
+  h2 { font-size: 10.3pt; margin: 3.2mm 0 1mm 0; color: #0b3d63; border-bottom: 0.6pt solid #0b3d63; padding-bottom: 0.4mm; }
+  p { margin: 1mm 0; text-align: justify; }
+  .sub { color: #555; font-size: 8pt; margin-bottom: 1.5mm; }
+  ul { margin: 0.6mm 0 0.6mm 4mm; padding-left: 2mm; } li { margin-bottom: 0.9mm; text-align: justify; }
+  table { border-collapse: collapse; width: 100%; font-size: 7.9pt; margin: 1.2mm 0; }
+  th, td { border: 0.4pt solid #b9c4cf; padding: 0.7mm 1.6mm; text-align: right; }
+  th { background: #e8eef4; } td:first-child, th:first-child { text-align: left; }
+  td.txt { text-align: left; }
+  img { width: 100%; max-height: 62mm; object-fit: contain; display: block; margin: 1mm auto; }
+  .cap { font-size: 7.4pt; color: #555; text-align: center; margin-top: 0; }
+  .caja { background: #f3f7fa; border-left: 2pt solid #0b3d63; padding: 1.2mm 2.4mm; margin: 1.4mm 0; }
+  .pie { font-size: 7pt; color: #777; margin-top: 2mm; }
+  .salto { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<h1>Escenarios de estrés y cambios de régimen de mercado</h1>
+<p class="sub">Informe ejecutivo para el Comité de Riesgos (CEO, CFO, CRO) · {{ fecha }} · Cartera equiponderada de {{ n_activos }} activos (acciones, crédito high yield y bonos del Tesoro) sin rebalanceo · Datos de {{ inicio }} a {{ fin }} · {{ n_sims }} simulaciones a {{ horizonte }} días hábiles (seis meses)</p>
+
+<h2>Mensajes clave</h2>
+<ul>
+  <li><b>El riesgo no es constante: hay dos mercados.</b> El {{ pct_crisis }} de los días el mercado está en régimen de crisis. En él la volatilidad mediana de cada activo se multiplica por {{ ratio_vol }} y la correlación media entre activos sube de {{ corr_calma }} a {{ corr_crisis }}. Un modelo de parámetros únicos subestima las pérdidas extremas.</li>
+  <li><b>Pérdida a seis meses.</b> En la crisis base, con una confianza del {{ nivel }} %, la cartera no pierde más del {{ e.Base.var99_6m }} del capital (VaR); si se supera ese umbral, la pérdida media es del {{ e.Base.es99_6m }} (ES). En la crisis de crédito de 2008 sube a {{ e.E2.var99_6m }} y {{ e.E2.es99_6m }}; en el pánico de liquidez, a {{ e.E3.var99_6m }} y {{ e.E3.es99_6m }}.</li>
+  <li><b>La cobertura de renta fija puede fallar.</b> La estanflación de 2022 no aumenta la pérdida de cola (ES a seis meses del {{ e.E1.es99_6m }}) pero rompe la diversificación: la correlación media entre bonos y acciones fue de {{ corr_ba.e1 }}, frente a {{ corr_ba.base }} en una crisis típica y {{ corr_ba.e2 }} en 2008. Acciones y bonos cayeron a la vez.</li>
+  <li><b>Qué recomendamos.</b> Fijar límites sobre el ES y no solo sobre el VaR, vigilar el régimen con una señal sin información futura y no apoyar la cobertura de la cartera solo en renta fija (detalle en la última página).</li>
+</ul>
+
+<h2>Qué ha ocurrido: dos regímenes de mercado</h2>
+<p>Se estima con un modelo de Markov oculto (HMM) de dos estados, a partir del S&amp;P 500, el VIX, la pendiente de la curva de tipos y el diferencial de crédito, qué días pertenecen a un régimen de calma y cuáles a uno de crisis. Una crisis dura de media unos {{ dur_crisis }} días y la calma unos {{ dur_calma }}; hay {{ n_cambios }} cambios de régimen en el periodo. Para evitar «crisis de tres días» se exige una duración mínima de {{ min_dias }} días.</p>
+<img src="fig_regimenes.png" alt="S&amp;P 500 por régimen">
+<p class="cap">S&amp;P 500 (escala logarítmica). Azul = crisis, blanco = calma. Las bandas coinciden con la crisis financiera, la deuda europea, el COVID, 2022 y los aranceles.</p>
+<table>
+  <tr><th>Episodio de crisis (los de mayor caída)</th><th>Días</th><th>Caída S&amp;P 500</th><th>Pico VIX</th><th class="txt">Qué pasó</th></tr>
+  {% for ep in episodios %}
+  <tr><td class="txt">{{ ep.periodo }}</td><td>{{ ep.dias }}</td><td>{{ ep.caida }}</td><td>{{ ep.vix }}</td><td class="txt">{{ ep.narrativa }}</td></tr>
+  {% endfor %}
+</table>
+<div class="caja"><b>Qué distingue una crisis de la calma.</b> Cuatro cosas medibles: la volatilidad sube, las correlaciones suben (en el {{ pct_pares }} de los pares de activos), las caídas extremas coinciden más (probabilidad de que dos activos estén a la vez en su peor {{ cola_q }} % de días: de {{ lambda_calma }} a {{ lambda_crisis }}) y el mercado paga más por el riesgo (VIX medio de {{ vix_calma }} a {{ vix_crisis }}; diferencial de crédito de {{ oas_calma }} a {{ oas_crisis }} puntos). Las correlaciones suben de forma significativa (intervalo del {{ ic_pct }} % en crisis:{{ corr_ic_inf }} a {{ corr_ic_sup }}) pero <b>no tienden a uno</b>: los bonos y el oro diluyen la media. El crédito de alto rendimiento (HYG) multiplica su volatilidad por {{ hyg_ratio }} y se comporta como un activo de riesgo. El oro sigue siendo diversificador (correlación con el S&amp;P 500 en crisis de {{ gld_corr }}; sube en el {{ gld_pos }} de los días de crisis) pero su volatilidad también aumenta ({{ gld_ratio }} veces).</div>
+
+<h2 class="salto">Escenarios de estrés</h2>
+<p>El simulador reproduce el comportamiento observado y sustituye el régimen de crisis por tres escenarios, que siempre arrancan en crisis. <b>{{ nombres.E1 }}</b>: se recalibra con los {{ n_e1 }} días de crisis de ese año (inflación y subida de tipos). <b>{{ nombres.E2 }}</b>: se recalibra con los {{ n_e2 }} días de crisis desde la quiebra de Lehman hasta marzo de 2009; ENPH no cotizaba y se sustituye por una proxy (beta de {{ beta_proxy }} respecto al S&amp;P 500). <b>{{ nombres.E3 }}</b> (escenario propio): en un pánico de liquidez se vende lo vendible y no lo deseado, los diferenciales de crédito se abren y la diversificación falla; se modela con volatilidad multiplicada por {{ e3_vol }}, colas más pesadas y correlaciones empujadas hacia uno.</p>
+<table>
+  <tr><th>Pérdidas en positivo, sobre el capital</th>{% for c in columnas %}<th>{{ c }}</th>{% endfor %}</tr>
+  {% for f in tabla %}
+  <tr><td>{{ f.etiqueta }}</td>{% for v in f.valores %}<td>{{ v }}</td>{% endfor %}</tr>
+  {% endfor %}
+</table>
+<p class="cap">VaR y ES al {{ nivel }} %. ES = pérdida media cuando se supera el VaR. Horizontes: diario, mensual y seis meses.</p>
+<img src="fig_escenarios.png" alt="Escenarios de estrés">
+<p class="cap">Izquierda: distribución del retorno de la cartera a seis meses por escenario. Derecha: VaR y ES a seis meses.</p>
+<div class="caja"><b>Cómo leerlo.</b> <i>Crisis de crédito y pánico de liquidez</i> son los escenarios graves: el ES a seis meses es del {{ e.E2.es99_6m }} y del {{ e.E3.es99_6m }} del capital, y la probabilidad de perder más de una quinta parte es de {{ e.E2.prob_perdida_20pct_6m }} y {{ e.E3.prob_perdida_20pct_6m }}. Sus orígenes difieren: 2008 es sobre todo volatilidad ({{ e.E2.vol_anualizada }} anual); el pánico de liquidez suma volatilidad ({{ e.E3.vol_anualizada }}) y endurece la dependencia conjunta de las caídas extremas ({{ lambda_e3 }} frente a {{ lambda_crisis }} en la crisis base). <i>La estanflación</i> es el escenario engañoso: su ES es menor que el de la crisis base ({{ e.E1.es99_6m }} frente a {{ e.Base.es99_6m }}) pero la renta fija deja de proteger. En la crisis de crédito, el ES supera al VaR en {{ gap_es_var_e2 }} puntos: el VaR no dice cuánto se pierde cuando se supera.</div>
+
+<h2 class="salto">Recomendaciones de gestión</h2>
+<ul>
+  <li><b>Límites sobre el ES.</b> El VaR no mide la severidad más allá del umbral ni es subaditivo; el ES a seis meses del escenario de crédito ({{ e.E2.es99_6m }}) es la cifra relevante para dimensionar capital y límites de pérdida.</li>
+  <li><b>Vigilar el régimen sin mirar al futuro.</b> La probabilidad de crisis «suavizada» usa toda la serie y sirve para analizar el pasado; para operar hay que usar la probabilidad filtrada (solo información hasta hoy) y definir acciones previamente pactadas cuando supere el umbral de {{ umbral }}.</li>
+  <li><b>No confiar solo en renta fija como cobertura.</b> En 2022 bonos y acciones cayeron a la vez. Conviene combinar duración con activos que no dependan del mismo shock (el oro lo ha hecho en crisis, con volatilidad creciente) y revisar la correlación bono-acción como indicador de riesgo.</li>
+  <li><b>Pruebas de estrés periódicas.</b> Incluir de forma habitual un pánico de liquidez, que no se parece a ningún episodio concreto de la historia pero es el que más aumenta la dependencia conjunta.</li>
+</ul>
+
+<h2>Limitaciones y riesgo de modelo</h2>
+<ul>
+  <li><b>Persistencia de la crisis.</b> Con la matriz de transición histórica la crisis simulada dura unos {{ dur_sim }} días de media; las ventanas reales de 2022 y 2008 caen en los percentiles {{ perc_e1 }} y {{ perc_e2 }} de su escenario (en 2008 la cartera perdió el {{ perdida_real_e2 }} en seis meses): el modelo puede quedarse corto en crisis largas.</li>
+  <li><b>Dependencia estimada con pocos datos.</b> Las correlaciones se estiman en la ventana con los {{ n_activos }} activos ({{ n_cal }} días, de los cuales {{ n_crisis_cop }} de crisis); la crisis de 2008 queda fuera y se reconstruye con una proxy de ENPH, que es una cartera sintética. Variar la ventana, duplicar el ruido de la proxy o quitar ENPH mueve el ES a seis meses menos de {{ rango_sens }} puntos.</li>
+  <li><b>Validación.</b> El {{ cobertura }} de las ventanas reales de seis meses cae dentro de la banda del {{ banda_inf }} al {{ banda_sup }} % simulada. Sin el caso extremo de GME (enero de 2021), la volatilidad simulada ({{ vol_sim_sin }}) es algo superior a la real ({{ vol_real_sin }}): el modelo es conservador. El VaR a seis meses histórico ({{ var6_real }}) es muy inferior al simulado ({{ var6_sim }}) porque la historia disponible solo contiene unas pocas ventanas independientes y ninguna crisis sostenida tipo 2008.</li>
+  <li><b>Simplificaciones.</b> Solo dos regímenes; retornos independientes dentro de cada régimen; bonos aproximados por duración y convexidad (sin diferencial ni <i>roll-down</i>); sin rebalanceo. Modelos interpretables (HMM, cópulas, Monte Carlo) por diseño: no se usa ningún modelo opaco.</li>
+</ul>
+<h2>Metodología en breve</h2>
+<ul>
+  <li><b>Régimen.</b> Modelo de Markov oculto gaussiano de dos estados (calma y crisis) sobre cuatro variaciones diarias: S&amp;P 500, VIX, pendiente de la curva y diferencial de crédito. Decisión dura con umbral y duración mínima; la probabilidad suavizada solo describe el pasado.</li>
+  <li><b>Distribuciones y dependencia.</b> Para cada activo y régimen se elige entre distribución normal y t de Student (criterio BIC); la dependencia entre activos se modela con una cópula por régimen (t de Student, estimada con la tau de Kendall), que captura que las caídas extremas tienden a coincidir.</li>
+  <li><b>Simulación.</b> Por trayectoria y día: se sortea el régimen con la cadena de Markov, la dependencia con la cópula del régimen y el retorno de cada activo con su distribución del régimen. La cartera es equiponderada y sin rebalanceo. Una única semilla hace los resultados reproducibles.</li>
+  <li><b>Medidas.</b> VaR y ES al {{ nivel }} % como pérdida positiva sobre el capital, en horizonte diario, mensual y de seis meses. Sin aprendizaje profundo ni modelos opacos: todo es interpretable y está justificado económicamente en el registro de decisiones.</li>
+</ul>
+<p class="pie">Todas las cifras de este informe se generan automáticamente a partir de <code>outputs/results.json</code> (semilla {{ seed }}, reproducible).</p>
+
+</body>
+</html>

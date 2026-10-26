@@ -1,0 +1,18 @@
+[project]
+name = "stresslab"
+version = "0.1.0"
+description = "Práctica B2-2: escenarios de estrés y cambios de régimen de mercado"
+requires-python = ">=3.11"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = ["slow: ejecuta el notebook completo con nbconvert (varios minutos); lanzar con -m slow"]
+addopts = "-m 'not slow'"

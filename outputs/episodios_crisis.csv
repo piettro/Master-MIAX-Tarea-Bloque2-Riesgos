@@ -1,0 +1,18 @@
+inicio,fin,dias,caida_sp500,pico_vix,narrativa
+2007-07-24,2007-08-20,20,-0.08748872890383774,30.829999923706055,"Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+2007-11-07,2007-11-28,15,-0.07436182216037002,31.09000015258789,"Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+2007-12-31,2008-02-05,25,-0.1136226767472025,31.010000228881836,"Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+2008-03-06,2008-04-08,23,-0.0452350290645791,32.2400016784668,"Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+2008-06-05,2008-08-08,46,-0.1178404899405443,28.540000915527344,"Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+2008-09-04,2009-08-03,230,-0.4693798807349533,80.86000061035156,"Crisis financiera global: hipotecas subprime, quiebra de Lehman, congelación del crédito"
+2010-05-04,2010-06-10,27,-0.1262539199753394,45.790000915527344,Crisis de deuda soberana europea y «flash crash»
+2011-07-29,2011-11-30,87,-0.15487407003357734,48.0,Rebaja de rating de EE. UU. y contagio de la crisis europea
+2016-01-11,2016-02-17,26,-0.04836036473175753,28.139999389648438,"Devaluación del yuan, caída del petróleo y miedo a desaceleración global"
+2018-12-14,2019-01-08,16,-0.11297318168872572,36.06999969482422,Venta masiva del 4T 2018: Fed restrictiva y guerra comercial
+2020-02-24,2020-06-11,77,-0.3296682189068234,82.69000244140625,Pandemia de COVID-19: parón económico y crisis de liquidez
+2020-09-02,2020-09-28,18,-0.08215444926251414,33.599998474121094,Venta de megacaps tecnológicas tras el rally de verano de 2020
+2022-02-22,2022-08-03,113,-0.15684535966260993,36.45000076293945,Estanflación: inflación alta y subidas agresivas de tipos; caen acciones y bonos a la vez
+2022-08-25,2022-11-16,59,-0.136143757700939,33.630001068115234,Estanflación: inflación alta y subidas agresivas de tipos; caen acciones y bonos a la vez
+2022-12-09,2023-01-06,19,-0.04548746909135748,25.0,Estanflación: inflación alta y subidas agresivas de tipos; caen acciones y bonos a la vez
+2023-03-03,2023-03-31,21,-0.03154459789018749,26.520000457763672,Quiebra de Silicon Valley Bank y estrés en bancos regionales
+2025-04-03,2025-05-02,21,-0.12135493032764266,52.33000183105469,Aranceles de abril de 2025 y shock de incertidumbre comercial
